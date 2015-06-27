@@ -32,33 +32,33 @@
 #include <deque>
 #include <string>
 
-namespace swarm {
-  class LRUHash {
-    class Bucket;
-    static const size_t DEFAULT_BUCKET_SIZE = 1031;
 
-  public:
-    class Node {
-    private:
-      Node *next_, *prev_;  // double linked list for Bucket
-      Node *link_;          // single linked list for TimeSlot
-      int update_;
+class LRUHash {
+  class Bucket;
+  static const size_t DEFAULT_BUCKET_SIZE = 1031;
+
+public:
+  class Node {
+  private:
+    Node *next_, *prev_;  // double linked list for Bucket
+    Node *link_;          // single linked list for TimeSlot
+    int update_;
       
-    public:
-      Node();
-      virtual ~Node();
-      virtual uint64_t hash() = 0;
-      virtual bool match(const void *key, size_t len) = 0;
-      void attach(Node *node);
-      void detach();
-      Node *pop_all();
-      void push_link(Node * prev);
-      Node *pop_link();
-      Node *search(uint64_t hv, const void *key, size_t len);
-    };
+  public:
+    Node();
+    virtual ~Node();
+    virtual uint64_t hash() = 0;
+    virtual bool match(const void *key, size_t len) = 0;
+    void attach(Node *node);
+    void detach();
+    Node *pop_all();
+    void push_link(Node * prev);
+    Node *pop_link();
+    Node *search(uint64_t hv, const void *key, size_t len);
+  };
 
-  private:    
-    class NodeRoot : public Node {
+private:    
+  class NodeRoot : public Node {
     uint64_t hash() { return 0; }
     bool match(const void *key, size_t len) { return false; }
   };
@@ -87,14 +87,14 @@ namespace swarm {
   size_t curr_tick_;
   NodeRoot exp_node_;
 
-  public:
+public:
   LRUHash(size_t timeslot_size, size_t bucket_size=DEFAULT_BUCKET_SIZE);
   ~LRUHash();
   bool put(size_t tick, Node *node);
   Node *get(uint64_t hv, const void *key, size_t len);
   void prog(size_t tick=1);  // progress tick
   Node *pop();  // pop expired node
-  };
-}  // namespace swarm
+};
+
 
 #endif  // SRC_UTILS_LRU_HASH_H__

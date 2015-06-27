@@ -26,9 +26,9 @@
 
 #include <string.h>
 #include "./gtest.h"
-#include "../src/lru-hash.h"
+#include "../src/lru-hash.hpp"
 
-class TestNode : public swarm::LRUHash::Node {
+class TestNode : public LRUHash::Node {
 private:
   uint64_t hv_;
   void *key_;
@@ -50,7 +50,7 @@ public:
 };
 
 TEST(LRUHash, basic_test) {
-  swarm::LRUHash *lru = new swarm::LRUHash(10);
+  LRUHash *lru = new LRUHash(10);
   TestNode *node = new TestNode(100, "100");
 
   // put node
@@ -68,7 +68,7 @@ TEST(LRUHash, basic_test) {
 }
 
 TEST(LRUHash, expire_test) {
-  swarm::LRUHash *lru = new swarm::LRUHash(10);
+  LRUHash *lru = new LRUHash(10);
   TestNode *n1 = new TestNode(100, "100");
   TestNode *n2 = new TestNode(200, "200");
   TestNode *n3 = new TestNode(300, "300");
@@ -117,7 +117,7 @@ TEST(LRUHash, expire_test) {
 }
 
 TEST(LRUHash, tick_test) {
-  swarm::LRUHash *lru = new swarm::LRUHash(10);
+  LRUHash *lru = new LRUHash(10);
   TestNode *n1 = new TestNode(100, "100");
   TestNode *n2 = new TestNode(200, "200");
   
@@ -138,7 +138,7 @@ TEST(LRUHash, tick_test) {
 }
 
 TEST(LRUHash, error_handle) {
-  swarm::LRUHash *lru = new swarm::LRUHash(10);
+  LRUHash *lru = new LRUHash(10);
   TestNode *n1 = new TestNode(100, "100");
   TestNode *n2 = new TestNode(200, "200");
   
